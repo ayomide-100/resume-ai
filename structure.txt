@@ -1,0 +1,15 @@
+resume_classifier/
+├── notebooks/
+│   ├── 1_eda.ipynb
+│   └── 2_model_experiments.ipynb
+├── src/
+│   ├── preprocessing.py
+│   ├── feature_engineering.py
+│   └── model.py
+├── data/
+│   └── resume_data.csv
+├── models/
+│   └── final_model.pkl
+├── app/
+│   └── streamlit_app.py
+└── README.md
