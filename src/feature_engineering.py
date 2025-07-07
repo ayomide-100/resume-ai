@@ -1,3 +1,4 @@
+import re
 tech_keywords = {
     # Programming Languages
     "python", "java", "c", "c++", "c#", "javascript", "typescript", "r", "matlab", "scala", "go", "ruby", "perl", "sql", "pl/sql",
@@ -62,8 +63,11 @@ def count_keywords(text):
 def num_unique_words(text):
     return len(set(text.split()))
 
-def avg_word_lenght(text):
-    return lambda text: sum(len(text) for w in text.split()) / max(len(text.split()), 1)
+def average_word_length(text: str) -> float:
+    words = text.split()
+    total_characters = sum(len(word) for word in words)
+    return total_characters / max(len(words), 1)
+
 
 
 def has_management_terms(text: str) -> int:
@@ -71,7 +75,7 @@ def has_management_terms(text: str) -> int:
     text_lower = text.lower()
     return int(any(term in text_lower for term in management_keywords))
 
-import re
+
 
 def num_certifications(text: str) -> int:
     cert_patterns = [

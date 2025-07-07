@@ -111,3 +111,4 @@ def reflect_log_transform(series):
     reflected = max_val + 1 - series
     transformed = np.log1p(reflected)
     return transformed
+
