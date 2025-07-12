@@ -4,7 +4,9 @@ import pandas as pd
 from sklearn.base import TransformerMixin, BaseEstimator
 from src.data_preprocessing import *
 from src.feature_engineering import *
+from src.feature_engineering import tech_keywords as default_tech_keywords
 sys.path.append(os.path.abspath("../src"))
+sys.path.append(os.path.abspath(os.path.join(os.getcwd(), "..")))
 
 class CustomPreprocessor(BaseEstimator, TransformerMixin):
     
@@ -12,8 +14,15 @@ class CustomPreprocessor(BaseEstimator, TransformerMixin):
         pass
     
     def fit(self, X, y=None):
+        print("Type received in fit:", type(X))
+        print("X columns:", X.columns if isinstance(X, pd.DataFrame) else "Series")
+        if isinstance(X, pd.Series):
+            X = X.to_frame()
+
         return self
     def transform(self, X):
+        if isinstance(X, pd.Series):
+            X = X.to_frame()
         X = X.copy()
         X["Resume"] = X["Resume"].apply(clean_text)
         X["Resume"] = X["Resume"].apply(remove_dates)
@@ -28,17 +37,21 @@ class CustomPreprocessor(BaseEstimator, TransformerMixin):
 
 
 class CustomFeatureEng(BaseEstimator, TransformerMixin):
-    def __init__(self, tech_keywords) -> None:
-        if tech_keywords is None:
-            self.tech_keywords = tech_keywords
-        else:
-            self.tech_keywords = tech_keywords
-
+    def __init__(self, tech_keywords=None) -> None:
+        self.tech_keywords = tech_keywords if tech_keywords is not None else default_tech_keywords
     def fit(self, X, y =None):
+        print("Type received in fit for feature eng:", type(X))
+        print("X columns:", X.columns if isinstance(X, pd.DataFrame) else "Series")
+        if isinstance(X, pd.Series):
+            X = X.to_frame()
+    
+
         return self
     
     def transform(self, X):
-        X = X.copy
+        print(type(X))
+        print(X.columns)
+        X = X.copy()
 
         if "Resume" not in X.columns:
             raise ValueError("Input Dataframe must contain a 'Resume' column")

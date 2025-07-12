@@ -71,14 +71,14 @@ def remove_newlines(text: str) -> str:
     return text.replace('\n', ' ').replace('\r', ' ').strip()
 
 
-def strip_column_whitespace_inplace(df, column_name):
+def strip_column_whitespace_inplace(text):
     """
     Strips leading and trailing whitespace from all string entries in the specified column.
     This modifies the original DataFrame in place.
 
     
     """
-    df[column_name] = df[column_name].astype(str).str.strip()
+    return text.astype(str).str.strip()
 
 
 
