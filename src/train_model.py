@@ -31,7 +31,7 @@ y_raw = df["Category"]
 X_train, X_test, y_train, y_test = train_test_split(X_full, y_raw, stratify=y_raw, test_size=0.2, random_state=42)
 
 encoder = joblib.load('models/label_encoder.pkl')
-pipeline = joblib.load('models/logistic_reg.pkl')
+pipeline = joblib.load('models/xgboost_model.pkl')
 
 
 
