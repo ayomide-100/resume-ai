@@ -37,12 +37,17 @@ def clean_input(samp: str) -> str:
 
 
 
-st.set_page_config(page_title= "RESUME AI", page_icon= "📄", layout= "centered")
+st.set_page_config(page_title= "RESUME AI", page_icon= "📄", layout= "wide")
 st.title("Resume Screening AI")
 st.markdown("Paste your Resume for screening ")
+with st.container():
+    col1, col2 = st.columns([2, 1])
 
+    with col1:
+        resume_text = st.text_area("Paste your resume here:", height= 300, placeholder= "Input your full resume here")
+    with col2:
+        st.info("Tip: Include skills, certificates, degrees, work experience and projects to get the best experience and results!")
 
-resume_text = st.text_area("Paste your resume here:", height= 300)
 
 if st.button("Analyze Resume"):
     if not resume_text.strip():
@@ -51,34 +56,44 @@ if st.button("Analyze Resume"):
         with st.spinner("Analyzing..."):
             sample_resume = clean_input(resume_text)
             result = predict_resume(text= sample_resume, encoder= encoder, pipeline= model)
-
-
         st.success("Analysis Complete!")
+
+    col1, col2 = st.columns([2, 1])
+
+    
+
+
+    with col1:
+        
         st.subheader("Prediction")
-        st.markdown(f"Predicted Role: {str(result["prediction"]).upper()}")
-        st.subheader("Salary")
-        st.markdown(f"Salary range: ${result["salary range"]}k")
+        st.markdown(f"**Predicted Role**: {str(result["prediction"]).upper()}")
+        st.subheader("Potential Salary")
+        s1 = result["salary range"][0]
+        s2 = result["salary range"][1]
+        st.markdown(f"Salary range: ``${s1}k``-``${s2}k``")
+
+    with col2:
 
         st.subheader("Potential Job Titles:")
         for job in result["potential job titles"]:
-            st.markdown(f"- {job}")
+            st.markdown(f"- *{job}*")
 
             
             
-        st.subheader("Confidence Score")
-        conf_int = int(result["confidence"])
-        progress_bar = st.progress(0, text="Calculating!")
-        for percent_comp in range(1, conf_int +1):
-            time.sleep(0.1)
-            progress_bar.progress(percent_comp, text= f"{percent_comp}% ")
+    st.subheader("Confidence Score")
+    conf_int = int(result["confidence"])
+    progress_bar = st.progress(0, text="Calculating!")
+    for percent_comp in range(1, conf_int +1):
+        time.sleep(0.05)
+        progress_bar.progress(percent_comp, text= f"{percent_comp}% ")
         
 
-        if conf_int >= 85:
-            st.metric(label= " ", value= f"{conf_int}%", delta= "High")
-        elif conf_int >=60: 
-            st.metric(label= " ", value= f"{conf_int}%", delta= "Medium")
-        else:
-            st.metric(label= " ", value= f"{conf_int}%", delta= "Low")
+    if conf_int >= 85:
+        st.metric(label= " ", value= f"{conf_int}%", delta= "High")
+    elif conf_int >=60: 
+        st.metric(label= " ", value= f"{conf_int}%", delta= "Medium")
+    else:
+        st.metric(label= " ", value= f"{conf_int}%", delta= "Low")
 
 
             
