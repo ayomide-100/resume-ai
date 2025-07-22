@@ -415,7 +415,7 @@ salary_with_titles = {
             ]
         }
     },
-    "DevOps Engineer": {
+    "Devops Engineer": {
         "junior": {
             "salary_range": (60530, 111000),
             "job_titles": [
@@ -650,3 +650,13 @@ salary_with_titles = {
         }
     }
 }
+
+
+
+
+
+
+salary = salary_with_titles["HR"]
+
+exp = salary["senior"]
+#print(exp["salary_range"], exp["job_titles"])
