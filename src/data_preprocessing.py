@@ -7,9 +7,9 @@ import nltk
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 
-nltk.download("punkt")
-nltk.download("stopwords")
-nltk.download("wordnet")
+# nltk.download("punkt")
+# nltk.download("stopwords")
+# nltk.download("wordnet")
 # Combining NLTK + Custom stopwords
 nltk_stopwords = set(stopwords.words("english"))
 custom_stopwords = {
@@ -35,6 +35,15 @@ def remove_dates(text: str) -> str:
 
 
 def clean_text(text: str) -> str:
+    """Removes data, punctuation and then makes text lowercase then
+      tokenization and lemmatization
+
+    Args:
+        text (str): _description_
+
+    Returns:
+        str: _description_
+    """
     # Remove dates first
     text = remove_dates(text)
 
@@ -58,6 +67,9 @@ def clean_text(text: str) -> str:
 
 
 def remove_urls(text: str) -> str:
+    """
+    Removes URLs in text
+    """
     text = re.sub(r'http\S+|www\.\S+', '', text)
     return re.sub(r'\s+', ' ', text).strip()
 
@@ -78,7 +90,10 @@ def strip_column_whitespace_inplace(text):
 
     
     """
-    return text.astype(str).str.strip()
+    if isinstance(text, pd.Series):
+        return text.astype(str).str.strip()
+    elif isinstance(text, str):
+        return text.strip()
 
 
 
@@ -107,8 +122,9 @@ def remove_outliers_iqr(df: pd.DataFrame, column: str, multiplier: float = 1.5) 
 
 
 def reflect_log_transform(series):
-    max_val = series.max()
-    reflected = max_val + 1 - series
-    transformed = np.log1p(reflected)
-    return transformed
+    if isinstance(series, pd.Series):
+        max_val = series.max()
+        reflected = max_val + 1 - series
+        transformed = np.log1p(reflected)
+        return transformed
 

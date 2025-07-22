@@ -15,31 +15,32 @@ sys.path.append(os.path.abspath(os.path.join(os.getcwd(), "..")))
 
 
 class TfidfWrapper(BaseEstimator, TransformerMixin):
-    """custom tfid wrapper
-
-    Args:
-        BaseEstimator (_class_): _to create transformers, from sklearn package_
-        TransformerMixin (_class_): _to create transformers, from sklearn package_
-    """
     def __init__(self, **kwargs):
         self.vectorizer = TfidfVectorizer(**kwargs)
 
     def fit(self, X, y=None):
-        if isinstance(X, pd.Series):
-            X = X.to_frame()
         X = self._preprocess(X)
-        return self.vectorizer.fit(X)
+        self.vectorizer.fit(X)
+        return self  # <--- MUST return self
 
     def transform(self, X):
-        if isinstance(X, pd.Series):
-            X = X.to_frame()
         X = self._preprocess(X)
         return self.vectorizer.transform(X)
     
     def _preprocess(self, X):
-       
-        return [str(text) if text is not None else "" for text in X]
-    
+        if isinstance(X, pd.DataFrame):
+            # Flatten all values across columns into strings
+            return X.astype(str).agg(' '.join, axis=1).tolist()
+        elif isinstance(X, pd.Series):
+            return X.astype(str).tolist()
+        elif isinstance(X, list):
+            return [str(text) if text is not None else "" for text in X]
+        else:
+            raise ValueError(f"Unsupported input type: {type(X)}")
+    def get_feature_names_out(self):
+        return self.vectorizer.get_feature_names_out()
+
+
 
 
 def ravel_values(x):
@@ -65,7 +66,7 @@ log_transform_fucntion = FunctionTransformer(reflect_log_transform, validate= Tr
 new_cols = ["word_count","num_unique_words", "avg_word_length", "num_tech_keywords",
             "vocab_density", "has_management_terms", "num_certs", "num_langs", "has_degree"
             ]
-log_transform = Pipeline([("log_trans", log_transform_fucntion, new_cols )])
+log_transform = Pipeline([("log_trans", log_transform_fucntion)])
 
 
 full_preprocessing = ColumnTransformer([
