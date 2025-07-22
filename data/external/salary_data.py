@@ -181,7 +181,7 @@ salary_with_titles = {
             ]
         }
     },
-    "Health and fitness": {
+    "Health And Fitness": {
         "junior": {
             "salary_range": (35000, 45000),
             "job_titles": [
@@ -285,7 +285,7 @@ salary_with_titles = {
             ]
         }
     },
-    "SAP Developer": {
+    "Sap Developer": {
         "junior": {
             "salary_range": (65000, 85000),
             "job_titles": [
@@ -467,7 +467,7 @@ salary_with_titles = {
             ]
         }
     },
-    "PMO": {
+    "Pmo": {
         "junior": {
             "salary_range": (50000, 70000),
             "job_titles": [
@@ -545,7 +545,7 @@ salary_with_titles = {
             ]
         }
     },
-    "ETL Developer": {
+    "Etl Developer": {
         "junior": {
             "salary_range": (60000, 80000),
             "job_titles": [
@@ -571,7 +571,7 @@ salary_with_titles = {
             ]
         }
     },
-    "DotNet Developer": {
+    "Dotnet Developer": {
         "junior": {
             "salary_range": (60000, 80000),
             "job_titles": [
@@ -656,7 +656,4 @@ salary_with_titles = {
 
 
 
-salary = salary_with_titles["HR"]
 
-exp = salary["senior"]
-#print(exp["salary_range"], exp["job_titles"])

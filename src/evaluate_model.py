@@ -12,6 +12,9 @@ def vocab_density(text: str) -> float:
 
 
 def predict_resume(text: str, pipeline, encoder):
+    if not text.strip():
+        raise ValueError
+    
 
     feature= {
         "Resume": text,
@@ -38,13 +41,16 @@ def predict_resume(text: str, pipeline, encoder):
     prob = proba_vector[pred]
     label = encoder.inverse_transform([pred])[0]
     tilte = str(label).title()
+    if tilte == "Hr":
+        tilte = "HR"
     if feature["num_certs"] >= 3 and feature["num_langs"] >= 4 and feature["has_management_terms"] == True:
         salary = salary_with_titles[tilte]
         exp = salary["senior"]
-    elif feature["num_certs"] >= 2 and feature["num_langs"] >= 3 and feature["has_management_terms"] == False:
+    elif feature["num_certs"] >= 2 and feature["num_langs"] >= 3 and feature["has_management_terms"] == False or feature["has_management_terms"] == True:
         salary = salary_with_titles[tilte]
         exp = salary["mid"]
-    elif feature["num_certs"] >= 0 and feature["num_langs"] >= 1 and feature["has_management_terms"] == False:
+    elif feature["num_certs"] >= 0 and feature["num_langs"] >= 1 and feature["has_management_terms"] == False or feature["has_management_terms"] == True:
+        salary = salary_with_titles[tilte]
         salary = salary_with_titles[tilte]
         exp = salary["junoir"]
     
